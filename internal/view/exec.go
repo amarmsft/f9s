@@ -41,7 +41,7 @@ type shellOpts struct {
 
 func runK(a *App, opts shellOpts) bool {
 	bin, err := exec.LookPath("kubectl")
-	if errors.Is(err, exec.ErrDot) {
+	if errors.Is(err, exec.ErrNotFound) {
 		log.Error().Err(err).Msgf("kubectl command must not be in the current working directory")
 		return false
 	}
@@ -141,7 +141,7 @@ func execute(opts shellOpts) error {
 
 func runKu(a *App, opts shellOpts) (string, error) {
 	bin, err := exec.LookPath("kubectl")
-	if errors.Is(err, exec.ErrDot) {
+	if errors.Is(err, exec.ErrNotFound) {
 		log.Error().Err(err).Msgf("kubectl command must not be in the current working directory")
 		return "", err
 	}

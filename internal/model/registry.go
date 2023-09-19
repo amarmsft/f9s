@@ -151,6 +151,24 @@ var Registry = map[string]ResourceMeta{
 		Renderer: &render.Job{},
 	},
 
+	"apis.clusterfleet.io/v1alpha1/applications": {
+		DAO:      &dao.Application{},
+		Renderer: &render.ApplicationRenderer{},
+	},
+	"apis.clusterfleet.io/v1alpha1/clusters": {
+		DAO:      &dao.FleetClusters{},
+		Renderer: &render.ClusterRenderer{},
+	},
+
+	"manifests": {
+		DAO:      &dao.Manifest{},
+		Renderer: &render.ManifestRenderer{},
+	},
+	"applicationStatus": {
+		DAO:      &dao.ApplicationStatus{},
+		Renderer: &render.ApplicationStatusRenderer{},
+	},
+
 	// CRDs...
 	"apiextensions.k8s.io/v1/customresourcedefinitions": {
 		Renderer: &render.CustomResourceDefinition{},

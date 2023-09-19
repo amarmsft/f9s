@@ -14,6 +14,7 @@ func loadCustomViewers() MetaViewers {
 	batchViewers(m)
 	extViewers(m)
 	helmViewers(m)
+	falconFleetViewers(m)
 
 	return m
 }
@@ -21,6 +22,19 @@ func loadCustomViewers() MetaViewers {
 func helmViewers(vv MetaViewers) {
 	vv[client.NewGVR("helm")] = MetaViewer{
 		viewerFn: NewHelm,
+	}
+}
+
+func falconFleetViewers(vv MetaViewers) {
+	vv[client.NewGVR("apis.clusterfleet.io/v1alpha1/applications")] = MetaViewer{
+		viewerFn: NewApplication,
+	}
+	vv[client.NewGVR("manifests")] = MetaViewer{
+		viewerFn: NewManifest,
+	}
+
+	vv[client.NewGVR("apis.clusterfleet.io/v1alpha1/clusters")] = MetaViewer{
+		viewerFn: NewFleetCluster,
 	}
 }
 
