@@ -2,9 +2,9 @@ package view
 
 import (
 	"context"
+	"time"
 
 	"github.com/derailed/k9s/internal/client"
-	"github.com/derailed/tcell/v2"
 )
 
 // Helm represents a helm chart view.
@@ -17,8 +17,10 @@ func NewManifest(gvr client.GVR) ResourceViewer {
 	c := Application{
 		ResourceViewer: NewBrowser(gvr),
 	}
-	c.GetTable().SetBorderFocusColor(tcell.ColorMediumSpringGreen)
-	c.GetTable().SetSelectedStyle(tcell.StyleDefault.Foreground(tcell.ColorWhite).Background(tcell.ColorMediumSpringGreen).Attributes(tcell.AttrNone))
+
+	c.GetTable().GetModel().SetRefreshRate(10 * time.Minute)
+	//c.GetTable().SetBorderFocusColor(tcell.ColorMediumSpringGreen)
+	//c.GetTable().SetSelectedStyle(tcell.StyleDefault.Foreground(tcell.ColorWhite).Attributes(tcell.AttrNone))
 	c.SetContextFn(c.applicationContext)
 
 	return &c
@@ -27,3 +29,6 @@ func NewManifest(gvr client.GVR) ResourceViewer {
 func (c *Manifest) applicationContext(ctx context.Context) context.Context {
 	return ctx
 }
+
+// Name returns the component name.
+func (c *Manifest) Name() string { return "manifests" }

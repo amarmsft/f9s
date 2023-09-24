@@ -298,6 +298,7 @@ func loadK9s(m ResourceMetas) {
 		Name:         "manifests",
 		Kind:         "manifests",
 		SingularName: "manifests",
+		Namespaced:   true,
 		Verbs:        []string{},
 		Categories:   []string{"k9s"},
 	}

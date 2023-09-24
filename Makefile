@@ -1,4 +1,4 @@
-NAME       := k9s
+NAME       := f9s
 GO_FLAGS   ?=
 GO_TAGS	   ?= netgo
 CGO_ENABLED?=0

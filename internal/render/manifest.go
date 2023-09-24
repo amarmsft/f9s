@@ -19,7 +19,7 @@ type ManifestRenderer struct {
 // Header returns a header rbw.
 func (ManifestRenderer) Header(string) Header {
 	return Header{
-		HeaderColumn{Name: "NAME"},
+		HeaderColumn{Name: "MANIFEST"},
 		HeaderColumn{Name: "KIND"},
 		HeaderColumn{Name: "REPLICAS"},
 	}

@@ -36,7 +36,7 @@ func (c *Application) bindKeys(aa ui.KeyActions) {
 }
 
 func (c *Application) showManifests(app *App, model ui.Tabular, gvr, path string) {
-	co := NewContainer(client.NewGVR("manifests"))
+	co := NewManifest(client.NewGVR("manifests"))
 	co.SetContextFn(c.applicationContext)
 	if err := app.inject(co, false); err != nil {
 		app.Flash().Err(err)
@@ -49,7 +49,7 @@ func (c *Application) showApplicationStatus(evt *tcell.EventKey) *tcell.EventKey
 		return evt
 	}
 
-	status := NewContainer(client.NewGVR("applicationStatus"))
+	status := NewApplicationStatus(client.NewGVR("applicationStatus"))
 	status.SetContextFn(c.applicationContext)
 	//no.SetContextFn(nodeContext(pod.Spec.NodeName))
 	if err := c.App().inject(status, false); err != nil {
