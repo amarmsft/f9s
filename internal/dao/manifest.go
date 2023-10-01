@@ -28,6 +28,7 @@ func (c *Manifest) List(ctx context.Context, _ string) ([]runtime.Object, error)
 		return nil, fmt.Errorf("no context path for %q", c.gvr)
 	}
 
+	//fqn = "clusterfleet/" + fqn
 	app, err := c.fetchApplication(fqn)
 	if err != nil {
 		return nil, err
@@ -59,7 +60,7 @@ func (c *Manifest) makeManifestResp(manifest render.Manifest, statuses map[strin
 
 	mo, _ := render.ManifestToUnstructed(manifest)
 
-	name := render.GetNameFromUnstructured(mo) + "_" + render.GetKindFromUnstructured(mo)
+	name := render.GetNameFromUnstructured(mo)
 	namespace := render.GetNamespaceFromUnstructured(mo)
 	kind := render.GetKindFromUnstructured(mo)
 	replicas := render.GetReplicaForUnstructured(mo)
@@ -68,7 +69,7 @@ func (c *Manifest) makeManifestResp(manifest render.Manifest, statuses map[strin
 	return render.ManifestRes{
 		Manifest:  &manifest,
 		Status:    &status,
-		Name:      name,
+		Name:      name + "_" + kind,
 		Namespace: namespace,
 		Kind:      kind,
 		Replicas:  replicas,

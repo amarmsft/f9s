@@ -34,18 +34,20 @@ func (c ManifestRenderer) Render(o interface{}, ns string, r *Row) error {
 
 	replicas := "-"
 	if manifest.Kind == "Deployment" {
-		deploymentStatus, _ := c.DeploymentStatusToMap(*manifest.Status)
-		repl, _, _ := unstructured.NestedFloat64(*deploymentStatus, "replicas")
-		avl, found, _ := unstructured.NestedFloat64(*deploymentStatus, "availableReplicas")
+		deploymentStatus, err := c.DeploymentStatusToMap(*manifest.Status)
+		if err == nil {
+			repl, _, _ := unstructured.NestedFloat64(*deploymentStatus, "replicas")
+			avl, found, _ := unstructured.NestedFloat64(*deploymentStatus, "availableReplicas")
 
-		if found {
-			replicas = fmt.Sprint(avl) + "/" + fmt.Sprint(repl)
-		} else {
-			replicas = "0/" + fmt.Sprint(repl)
+			if found {
+				replicas = fmt.Sprint(avl) + "/" + fmt.Sprint(repl)
+			} else {
+				replicas = "0/" + fmt.Sprint(repl)
+			}
 		}
 	}
 
-	r.ID = client.FQN(client.ClusterScope, manifest.Name)
+	r.ID = client.FQN(manifest.Namespace, manifest.Name)
 	r.Fields = Fields{
 		manifest.Name,
 		manifest.Kind,

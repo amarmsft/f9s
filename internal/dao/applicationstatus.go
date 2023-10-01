@@ -29,7 +29,7 @@ func (c *ApplicationStatus) List(ctx context.Context, _ string) ([]runtime.Objec
 		return nil, fmt.Errorf("no context path for %q", c.gvr)
 	}
 
-	// fqn = "clusterfleet/auditlogger"
+	//fqn = "clusterfleet/" + fqn
 	app, err := c.fetchApplication(fqn)
 	if err != nil {
 		return nil, err

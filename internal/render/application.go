@@ -72,7 +72,7 @@ func (c ApplicationRenderer) Render(o interface{}, ns string, r *Row) error {
 		clustersToShow = append(clustersToShow, clusters.Cluster)
 	}
 
-	r.ID = client.FQN(client.ClusterScope, app.GetName())
+	r.ID = client.FQN(app.Namespace, app.GetName())
 	r.Fields = Fields{
 		app.GetNamespace(),
 		app.GetName(),
