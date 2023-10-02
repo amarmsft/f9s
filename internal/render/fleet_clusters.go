@@ -18,18 +18,21 @@ type ClusterRenderer struct {
 // ColorerFunc colors a resource row.
 func (ClusterRenderer) ColorerFunc() ColorerFunc {
 	return func(ns string, h Header, re RowEvent) tcell.Color {
-		c := DefaultColorer(ns, h, re)
+		//c := DefaultColorer(ns, h, re)
 
+		c := CompletedColor
 		statusCol := h.IndexOf("PROVISIONED", true)
 		if statusCol == -1 {
 			return c
 		}
 		status := strings.TrimSpace(re.Row.Fields[statusCol])
 		switch status {
-		case "Ready":
+		case "completed":
 			c = StdColor
+			break
 		case "Provisioning":
 			c = PendingColor
+			break
 		default:
 			c = ErrColor
 		}
@@ -42,7 +45,7 @@ func (ClusterRenderer) ColorerFunc() ColorerFunc {
 func (ClusterRenderer) Header(string) Header {
 	return Header{
 		HeaderColumn{Name: "NAME"},
-		HeaderColumn{Name: "USGAE"},
+		HeaderColumn{Name: "USAGE"},
 		HeaderColumn{Name: "PROVISIONED"},
 		HeaderColumn{Name: "HEALTH"},
 		HeaderColumn{Name: "AGE", Time: true},
@@ -69,12 +72,14 @@ func (c ClusterRenderer) Render(o interface{}, ns string, r *Row) error {
 		}
 	}
 
+	//_ := cl.Spec.Properties["agentPoolProfiles"]
+
 	r.ID = client.FQN(client.ClusterScope, cl.GetName())
 	r.Fields = Fields{
 		cl.GetName(),
 		"general",
 		provisioned,
-		string(cl.Status.ClusterHealthStatus),
+		string(cl.Status.RuntimeStatus.ClusterState),
 		toAge(cl.GetCreationTimestamp()),
 	}
 
