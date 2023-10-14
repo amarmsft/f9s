@@ -15,12 +15,12 @@ type FleetClusters struct {
 
 // NewHelm returns a new alias view.
 func NewFleetCluster(gvr client.GVR) ResourceViewer {
-	c := Application{
+	c := FleetClusters{
 		ResourceViewer: NewBrowser(gvr),
 	}
 	c.GetTable().SetBorderFocusColor(tcell.ColorMediumSpringGreen)
 	c.GetTable().SetSelectedStyle(tcell.StyleDefault.Foreground(tcell.ColorWhite).Background(tcell.ColorMediumSpringGreen).Attributes(tcell.AttrNone))
-	c.SetContextFn(c.applicationContext)
+	c.SetContextFn(c.clustersContext)
 
 	return &c
 }

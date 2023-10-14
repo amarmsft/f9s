@@ -14,7 +14,7 @@ type Manifest struct {
 
 // NewHelm returns a new alias view.
 func NewManifest(gvr client.GVR) ResourceViewer {
-	c := Application{
+	c := Manifest{
 		ResourceViewer: NewBrowser(gvr),
 	}
 

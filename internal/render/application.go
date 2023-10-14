@@ -10,7 +10,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
-// CustomResourceDefinition renders a K8s CustomResourceDefinition to screen.
+// ApplicationRenderer renders a FalconFleet Application to screen.
 type ApplicationRenderer struct {
 	Base
 }

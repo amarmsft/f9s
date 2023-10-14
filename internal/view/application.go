@@ -21,7 +21,7 @@ func NewApplication(gvr client.GVR) ResourceViewer {
 	}
 	c.GetTable().SetBorderFocusColor(tcell.ColorMediumSpringGreen)
 	c.GetTable().SetSelectedStyle(tcell.StyleDefault.Foreground(tcell.ColorWhite).Background(tcell.ColorMediumSpringGreen).Attributes(tcell.AttrNone))
-	c.SetContextFn(c.applicationContext)
+	//c.SetContextFn(c.applicationContext)
 	c.GetTable().SetEnterFn(c.showManifests)
 	c.AddBindKeysFn(c.bindKeys)
 
@@ -37,7 +37,7 @@ func (c *Application) bindKeys(aa ui.KeyActions) {
 
 func (c *Application) showManifests(app *App, model ui.Tabular, gvr, path string) {
 	co := NewManifest(client.NewGVR("manifests"))
-	co.SetContextFn(c.applicationContext)
+	co.SetContextFn(c.applicationContext(path))
 	if err := app.inject(co, false); err != nil {
 		app.Flash().Err(err)
 	}
@@ -50,7 +50,7 @@ func (c *Application) showApplicationStatus(evt *tcell.EventKey) *tcell.EventKey
 	}
 
 	status := NewApplicationStatus(client.NewGVR("applicationStatus"))
-	status.SetContextFn(c.applicationContext)
+	status.SetContextFn(c.applicationContext(path))
 	//no.SetContextFn(nodeContext(pod.Spec.NodeName))
 	if err := c.App().inject(status, false); err != nil {
 		c.App().Flash().Err(err)
@@ -59,7 +59,13 @@ func (c *Application) showApplicationStatus(evt *tcell.EventKey) *tcell.EventKey
 	return nil
 }
 
-func (c *Application) applicationContext(ctx context.Context) context.Context {
+func (c *Application) applicationContext(path string) ContextFunc {
+	return func(ctx context.Context) context.Context {
+		return context.WithValue(ctx, internal.KeyPath, path)
+	}
+}
+
+/*func (c *Application) applicationContext(ctx context.Context) context.Context {
 	key := c.GetTable().GetSelectedCell(0) + "/" + c.GetTable().GetSelectedCell(1)
 	return context.WithValue(ctx, internal.KeyPath, key)
-}
+}*/
